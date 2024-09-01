@@ -1,14 +1,20 @@
 'use client'
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+
+
+
 export default function Home() {
   const router = useRouter();
   const animationRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if(animationRef.current != null) {
       animationRef.current.addEventListener('animationend', () => router.push("/home"));
     }
   });
+
   return (
     <main style={{width: '100%', height: '100%'}}>
       <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>

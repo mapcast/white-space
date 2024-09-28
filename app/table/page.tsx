@@ -1,7 +1,10 @@
 'use client'
 import HSTable from "@/components/common/HSTable";
+import HSCheckBox from "@/components/common/input/HSCheckBox";
+import { useState } from "react";
 
 export default function TableTest() {
+  const [checked, setChecked] = useState(false);
   return (
     <div style={{padding: 20}}>
       <HSTable
@@ -37,6 +40,7 @@ export default function TableTest() {
           ]
         }*/
       ]}/>
+      <HSCheckBox value={"abc"} checked={checked} text={'Oh NO.'} onClick={() => setChecked(!checked)}/>
     </div>
   )
 }

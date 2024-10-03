@@ -1,136 +1,117 @@
-import { useEffect, useState } from "react";
-import HSSearchPanel from "./HSSearchPanel";
+import { useState } from "react"
 
-export default function HSTable({searchItems, headers, getDatasApi, additionalCondition, handleClickRow}: 
-  {searchItems: HSItem[], headers: HSTableHeader[]
-    getDatasApi: (params: Map<String, String>) => Promise<any | null>, 
-    additionalCondition?: Map<String, String>, handleClickRow?: (data: any) => void}) {
-  const [searchKey, setSearchKey] = useState<HSItem|null>(null);
-  const [searchValue, setSearchValue] = useState('');
-  const [searchConditions, setSearchConditions] = useState<HSKeyValue[]>([]);
-  const [list, setList] = useState<Object[]>([]);
-  const [page, setPage] = useState(0);
-  const [maxPage, setMaxPage] = useState(0);
-  const [multipleSearch, setMultipleSearch] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [sort, setSort] = useState<HSTableSort>({
-    target: null,
-    //true: descending
-    direction: true
-  });
+export default function HSTable({headers, list, width, handleSort, handleClickData}: 
+  {headers:HSTableHeader[], list: Object[], 
+    width?: Array<string|number>,
+    handleSort?: (sort: HSSort) => void, handleClickData?: (header: HSTableHeader, data: string) => void}) {
+  const [sorted, setSorted] = useState<HSTableHeader|null>(null);
+  const [direction, setDirection] = useState(true);
 
-  function handleSort(target: HSTableColumn) {
-    if(sort.target === target) {
-      if(sort.direction) {
-        setSort({...sort, direction: false});
+  function sort(header: HSTableHeader) {
+    if(handleSort) {
+      setSorted(header);
+      if(sorted) {
+        let target = header.raw;
+        if(target === sorted.raw) {
+          handleSort({target, direction: !direction});
+          setDirection(!direction);
+        } else {
+          handleSort({target, direction: true});
+          setDirection(true);
+          setSorted(header);
+        }
       } else {
-        setSort({target: null, direction: true});
-      } 
-    } else {
-      setSort({direction: true, target});
-    }
-  }
-
-  async function getDatas(multiple?: boolean) {
-    const params: Map<String, String> = new Map();
-    params.set('page', page.toString());
-    params.set('size', '10');
-    //추가조건 받는식으로 작성
-    //if(imageId) params.set('imageId', imageId);
-    if(additionalCondition) {
-      const keys = additionalCondition.keys();
-      let next = keys.next();
-      if(!next.done) {
-        const val = additionalCondition.get(next.value);
-        if(val) params.set(next.value, val);
+        handleSort({target: header.raw, direction: true});
       }
-    }
-
-    if(sort.target != null) {
-      params.set('sort', `${sort.target.join ? `${sort.target.join}.${sort.target.raw}` : sort.target.raw},${sort.direction ? 'DESC' : 'ASC'}`)
     }
     
-    if(multiple) {
-      if(multiple === true) {
-        setMultipleSearch(true);
-        searchConditions.forEach((condition: HSKeyValue) => params.set(condition.key, condition.value));
-      } else {
-        setMultipleSearch(false);
-        if(searchKey != null && searchValue !== '') {
-          params.set(searchKey.raw, searchValue);
-        }
-      }
-    } else {
-      if(multipleSearch === true) {
-        searchConditions.forEach((condition: HSKeyValue) => params.set(condition.key, condition.value));
-      } else {
-        if(searchKey != null && searchValue !== '') {
-          params.set(searchKey.raw, searchValue);
-        }
-      }
-    }
-    /*
-    const response = await getDatasApi(params);
-    if(response != null) {
-      setList(response.page.content);
-      setMaxPage(response.page.totalPages);
-      setLoading(false);
-    } else {
-      alert("검사 데이터를 불러오는 중 에러가 발생했습니다.");
-    }  
-      */
   }
 
-  useEffect(() => {getDatas()}, [sort]);
-
   return (
-    <div>
-      <div>
-        <HSSearchPanel 
-        items={headers.filter((header: HSTableHeader) => header.search)
-          .map((header: HSTableHeader) => {return {id: header.id, display: header.display, raw: header.raw}})}
-        executeSearch={() => {
-          
-        }}
-        searchKey={searchKey}
-        updateSearchKey={setSearchKey}
-        searchValue={searchValue}
-        updateSearchValue={setSearchValue}
-        searchConditions={searchConditions}
-        updateSearchConditions={setSearchConditions}
-        multiple/>
-      </div>
-      <div>
-        <table>
-          <thead>
-            <tr>
-              {headers.map((header: HSTableHeader) => <td key={header.id}>{header.display ? header.display : header.raw}</td>)}
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((data: any) => 
-              <tr key={data.uuid} style={handleClickRow ? {cursor: "pointer"} : {}} onClick={() => handleClickRow ? handleClickRow(data) : {}}>
-                {headers.map((header: HSTableHeader, tdIndex: number) => 
-                <td key={tdIndex}>
-                  {header.join ? 
-                  <>
-                    {data[header.join][header.raw] == null ? '-' :
-                    !header.type || header.type === 'string' ? data[header.join][header.raw] :
-                    header.type === 'boolean' ? data[header.join][header.raw] ? header.bool?.true : header.bool?.false :
-                    header.type === 'time' ? data[header.join][header.raw].substring(0,19).replace("T", " ") : <></>}
-                  </> 
-                  :
-                  <>
-                    {data[header.raw] == null ? '-' :
-                    !header.type || header.type === 'string' ? data[header.raw] :
-                    header.type === 'boolean' ? data[header.raw] ? header.bool?.true : header.bool?.false :
-                    header.type === 'time' ? data[header.raw].substring(0,19).replace("T", " ") : <></>}
-                  </>}
-                </td>)}
-              </tr>)}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table>
+      <thead>
+        <tr style={{
+          background: 'rgba(0,0,0,0.5)',
+        }}>
+          {headers.map((header: HSTableHeader, index: number) => 
+          <th
+          key={header.id ? header.id : index} 
+          style={{
+            width: width ? width[index] : 'auto',
+            cursor: handleSort ? 'pointer' : 'default'
+          }}
+          onClick={() => handleSort ? sort(header) : {}}>
+            <div style={{display: 'flex', gap: 5}}>
+              <span>{header.display ? header.display : header.raw}</span>
+              <span>{sorted ? 
+              sorted.raw === header.raw ? 
+              direction ? '오름차순' : '내림차순' : ''
+              : ''}</span>
+            </div>
+          </th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {list.map((data: any, listIndex: number) => 
+          <tr key={data.id ? data.id : listIndex} style={{
+            background: listIndex % 2 == 0 ? 'rgba(0,0,0,0.02)' : 'rgba(0,0,0,0.15)'
+          }}>
+            {headers.map((header: HSTableHeader, tdIndex: number) => 
+            <td key={tdIndex} 
+            style={{cursor: handleClickData && header.search ? 'pointer' : 'default'}}
+            onClick={() => handleClickData && header.search ? handleClickData(header, header.join ? data[header.join][header.raw] : data[header.raw]) : {}}>
+              {header.join ? 
+              <>
+                {data[header.join][header.raw] == null ? '-' :
+                !header.type || header.type === 'string' ? data[header.join][header.raw] :
+                header.type === 'boolean' ? data[header.join][header.raw] ? header.bool?.true : header.bool?.false :
+                header.type === 'time' ? data[header.join][header.raw].substring(0,19).replace("T", " ") : <></>}
+              </> 
+              :
+              <>
+                {data[header.raw] == null ? '-' :
+                !header.type || header.type === 'string' ? data[header.raw] :
+                header.type === 'boolean' ? data[header.raw] ? header.bool?.true : header.bool?.false :
+                header.type === 'time' ? data[header.raw].substring(0,19).replace("T", " ") : <></>}
+              </>}
+            </td>)}
+          </tr>)}
+          {list.length === 0 ? <tr><td colSpan={headers.length} style={{padding: 10}}><center>No Information.</center></td></tr> : <></>}
+      </tbody>
+      <style jsx>{`
+        table {
+          border-spacing: 0px;
+          border-style: none;
+          padding: 0px;
+          width: 100%;
+          table-layout: fixed;
+          text-overflow:ellipsis; 
+          overflow:hidden; 
+          white-space:nowrap;
+          border: 1px groove rgba(0,0,0,0.1);
+        }
+        
+        th {
+          border-spacing: 0px;
+          border-style: none;
+          text-overflow:ellipsis; 
+          overflow:hidden; 
+          white-space:nowrap;
+          padding: 10px;
+          fontWeight: 800;
+          color: #FFF;
+          border-bottom: 5px solid rgba(0,0,0,0.2);
+          text-align: left;
+        }
+        td {
+          border-spacing: 0px;
+          border-style: none;
+          text-overflow:ellipsis; 
+          overflow:hidden; 
+          white-space:nowrap;
+          padding: 5px 10px;
+        }
+      `}</style>
+    </table>
   )
 }

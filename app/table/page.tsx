@@ -1,45 +1,35 @@
 'use client'
-import HSTable from "@/components/common/HSTable";
+import HSTableSet from "@/components/common/HSTableSet";
 import HSCheckBox from "@/components/common/input/HSCheckBox";
+import { Roboto } from "next/font/google";
 import { useState } from "react";
+
+const font = Roboto({ subsets: ["latin"], weight: "400" });
 
 export default function TableTest() {
   const [checked, setChecked] = useState(false);
   return (
-    <div style={{padding: 20}}>
-      <HSTable
+    <div className={font.className} style={{padding: 20}}>
+      <HSTableSet
       headers={[
         {
-          id: 0,
-          raw: 'babvo',
-          search: true,
-          display: 'deenm',
+          raw: 'createdTimeAt',
+          search: false,
+          display: 'Created Time',
         },
         {
-          id: 0,
-          raw: 'BASDsd',
+          raw: 'fieldA',
           search: true,
-          display: 'zzzz',
-        }
-      ]}
-      values={[
-        /*
+          display: 'Field A',
+        },
         {
-          id: 0,
-          values: [
-            {
-              id: 0,
-              display: 'daenty',
-              raw: 1
-            },
-            {
-              id: 0,
-              display: 'sib',
-              raw: 2
-            }
-          ]
-        }*/
-      ]}/>
+          raw: 'fieldB',
+          search: true,
+          display: 'Field B',
+        },
+      ]}
+      getDatasApi={async () => {}}
+      />
       <HSCheckBox value={"abc"} checked={checked} text={'Oh NO.'} onClick={() => setChecked(!checked)}/>
     </div>
   )

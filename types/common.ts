@@ -1,5 +1,5 @@
 type HSTableHeader = {
-  id: string|number,
+  id?: string|number,
   raw: string,
   search?: boolean,
   display?: string,
@@ -25,7 +25,8 @@ type HSItem = {
 type HSKeyValue = {
   key: string,
   value: string,
-  display: boolean
+  keyDisplay?: string,
+  valueDisplay?: string
 }
 
 type HSTableSort = {
@@ -41,4 +42,9 @@ type HSTableColumn = {
 type HSBool = {
   true: string,
   false: string
+}
+
+type HSSort = {
+  target: string,
+  direction: boolean
 }

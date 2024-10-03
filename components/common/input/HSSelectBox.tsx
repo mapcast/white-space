@@ -37,6 +37,7 @@ export default function HSSelectBox({items, selected, setSelected, width, dark}:
         borderRadius: 5, 
         cursor: "pointer",
         height: 26,
+        fontSize: 14,
         border: dark ? '1px groove rgba(255,255,255,0.2)' : '1px groove rgba(0,0,0,0.2)'}}>
         <div 
         onClick={() => setOpened(!opened)}

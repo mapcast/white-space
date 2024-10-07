@@ -1,4 +1,5 @@
 import { useState } from "react"
+import SmallArrow from "./item/SmallArrow";
 
 export default function HSTable({headers, list, width, handleSort, handleClickData}: 
   {headers:HSTableHeader[], list: Object[], 
@@ -13,8 +14,14 @@ export default function HSTable({headers, list, width, handleSort, handleClickDa
       if(sorted) {
         let target = header.raw;
         if(target === sorted.raw) {
-          handleSort({target, direction: !direction});
-          setDirection(!direction);
+          if(direction) {
+            handleSort({target, direction: false});
+            setDirection(false);
+          } else {
+            handleSort({target: '', direction: true});
+            setSorted(null);
+            setDirection(true);
+          }
         } else {
           handleSort({target, direction: true});
           setDirection(true);
@@ -41,12 +48,14 @@ export default function HSTable({headers, list, width, handleSort, handleClickDa
             cursor: handleSort ? 'pointer' : 'default'
           }}
           onClick={() => handleSort ? sort(header) : {}}>
-            <div style={{display: 'flex', gap: 5}}>
-              <span>{header.display ? header.display : header.raw}</span>
-              <span>{sorted ? 
+            <div style={{display: 'flex'}}>
+              <div style={{padding: '2px 0'}}>
+                <span>{header.display ? header.display : header.raw}</span>
+              </div>
+              <div style={{width: 20, height: 20}}>{sorted ? 
               sorted.raw === header.raw ? 
-              direction ? '오름차순' : '내림차순' : ''
-              : ''}</span>
+              <SmallArrow dark rotate={direction ? 180: 0}/> 
+              : <></> : <></>}</div>
             </div>
           </th>)}
         </tr>
@@ -97,11 +106,12 @@ export default function HSTable({headers, list, width, handleSort, handleClickDa
           text-overflow:ellipsis; 
           overflow:hidden; 
           white-space:nowrap;
-          padding: 10px;
+          padding: 8px 10px;
           fontWeight: 800;
           color: #FFF;
           border-bottom: 5px solid rgba(0,0,0,0.2);
           text-align: left;
+          font-size: 16px;
         }
         td {
           border-spacing: 0px;

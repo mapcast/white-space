@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import HSSearchPanel from "./HSSearchPanel";
 import HSTable from "./HSTable";
 import HSPagination from "./HSPagination";
+import ColorSwitch from "./item/ColorSwitch";
 
 const dataset = [
   {
@@ -34,11 +35,12 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
   {headers: HSTableHeader[]
     getDatasApi: (params: Map<String, String>) => Promise<any | null>, 
     additionalCondition?: Map<String, String>}) {
+
   const [searchKey, setSearchKey] = useState<HSItem|null>(null);
   const [searchValue, setSearchValue] = useState('');
   const [searchConditions, setSearchConditions] = useState<HSKeyValue[]>([]);
   const [list, setList] = useState<Object[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(99);
   const [multipleSearch, setMultipleSearch] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -114,6 +116,7 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
 
   return (
     <div>
+      <ColorSwitch/>
       <div>
         <HSSearchPanel 
         items={headers.filter((header: HSTableHeader) => header.search)

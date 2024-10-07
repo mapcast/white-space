@@ -57,7 +57,7 @@ export default function HSSelectBox({items, selected, setSelected, width, dark}:
           background: dark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)', 
           border: dark ? '1px groove rgba(255,255,255,0.2)' : '1px groove rgba(0,0,0,0.2)', 
           listStyleType: 'none'}}>
-          {items.map((item: HSItem) => <HSSelectBoxItem item={item} select={(item: HSItem) => {setSelected(item); setOpened(false);}}/>)}
+          {items.map((item: HSItem, index: number) => <HSSelectBoxItem key={index} item={item} select={(item: HSItem) => {setSelected(item); setOpened(false);}}/>)}
         </ul> : <></>}
       </div>
     </root.div>

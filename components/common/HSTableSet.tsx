@@ -108,11 +108,11 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
       setMaxPage(response.page.totalPages);
       setLoading(false);
     } else {
-      //alert("검사 데이터를 불러오는 중 에러가 발생했습니다.");
+      alert("테이블 데이터를 불러오는 중 에러가 발생했습니다.");
     }  
   }
 
-  useEffect(() => {getDatas()}, [sort]);
+  useEffect(() => {setLoading(true);getDatas();}, [sort]);
 
   return (
     <div>
@@ -133,36 +133,6 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
         multiple/>
       </div>
       <div>
-        {/*
-        <table>
-          <thead>
-            <tr>
-              {headers.map((header: HSTableHeader) => <td key={header.id}>{header.display ? header.display : header.raw}</td>)}
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((data: any) => 
-              <tr key={data.uuid} style={handleClickRow ? {cursor: "pointer"} : {}} onClick={() => handleClickRow ? handleClickRow(data) : {}}>
-                {headers.map((header: HSTableHeader, tdIndex: number) => 
-                <td key={tdIndex}>
-                  {header.join ? 
-                  <>
-                    {data[header.join][header.raw] == null ? '-' :
-                    !header.type || header.type === 'string' ? data[header.join][header.raw] :
-                    header.type === 'boolean' ? data[header.join][header.raw] ? header.bool?.true : header.bool?.false :
-                    header.type === 'time' ? data[header.join][header.raw].substring(0,19).replace("T", " ") : <></>}
-                  </> 
-                  :
-                  <>
-                    {data[header.raw] == null ? '-' :
-                    !header.type || header.type === 'string' ? data[header.raw] :
-                    header.type === 'boolean' ? data[header.raw] ? header.bool?.true : header.bool?.false :
-                    header.type === 'time' ? data[header.raw].substring(0,19).replace("T", " ") : <></>}
-                  </>}
-                </td>)}
-              </tr>)}
-          </tbody>
-        </table>*/}
         <HSTable
         headers={headers}
         list={list}
@@ -171,7 +141,8 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
           setSearchKey(target);
           setSearchValue(value);
         }}
-        width={[200,'auto','auto']}/>
+        width={[200,'auto','auto']}
+        loading={false}/>
       </div>
       <HSPagination 
       page={page}

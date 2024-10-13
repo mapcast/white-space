@@ -1,9 +1,10 @@
 import { useState } from "react"
 import SmallArrow from "./item/SmallArrow";
+import Loading from "./Loading";
 
-export default function HSTable({headers, list, width, handleSort, handleClickData}: 
+export default function HSTable({headers, list, width, loading, handleSort, handleClickData}: 
   {headers:HSTableHeader[], list: Object[], 
-    width?: Array<string|number>,
+    width?: Array<string|number>, loading?: boolean,
     handleSort?: (sort: HSSort) => void, handleClickData?: (header: HSTableHeader, data: string) => void}) {
   const [sorted, setSorted] = useState<HSTableHeader|null>(null);
   const [direction, setDirection] = useState(true);
@@ -85,7 +86,8 @@ export default function HSTable({headers, list, width, handleSort, handleClickDa
               </>}
             </td>)}
           </tr>)}
-          {list.length === 0 ? <tr><td colSpan={headers.length} style={{padding: 10}}><center>No Information.</center></td></tr> : <></>}
+          {loading ? <tr><td colSpan={headers.length} style={{padding: 10}}><Loading/></td></tr>
+          : list.length === 0 ? <tr><td colSpan={headers.length} style={{padding: 10}}><center>No Information.</center></td></tr> : <></>}
       </tbody>
       <style jsx>{`
         table {

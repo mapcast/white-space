@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Indie_Flower, Inter } from "next/font/google";
 import "./globals.css";
+import "@/style/spinner.css";
 import AuthContext from "@/src/context/AuthContext";
-
+import Wrapper from "@/components/layout/Wrapper";
 const basicFont = Indie_Flower({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
@@ -19,9 +20,7 @@ export default function RootLayout({
     <html lang="en" style={{width: '100%', height: '100%'}}>
       <body className={basicFont.className} style={{width: '100%', height: '100%'}}>
         <AuthContext>
-          <div className="main-wrapper">
-            <div className="main">{children}</div>
-          </div>
+          <Wrapper contents={children}/>
         </AuthContext>
       </body>
     </html>

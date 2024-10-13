@@ -21,7 +21,7 @@ export default function HSBigInput({fieldName, fieldValue, setFieldValue, imageS
   return (
     <div className={`big-input-wrap ${reduceBottomPadding ? 'reduce-padding' : ''}`} style={{width: width ? width : 400, position: 'relative'}}>
       {imageSrc ? 
-      <div className="big-input-image-wrap">
+      <div className={`big-input-image-wrap ${reduceBottomPadding ? 'reduce-padding' : ''}`}>
         <img src={imageSrc} className="big-input-image"/>  
       </div> : <></>}
       <div className={`big-input-input-wrap ${reduceBottomPadding ? 'reduce-padding' : ''}`}>
@@ -29,14 +29,19 @@ export default function HSBigInput({fieldName, fieldValue, setFieldValue, imageS
         <input ref={ref} type={type ? type : 'text'} className="big-input" value={fieldValue} onChange={(e) => setFieldValue(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} disabled={disabled ? disabled : false}/>
       </div>
       {help ? 
-      <div style={{position: 'absolute', right: 5, height: '100%', display: 'flex', alignItems: 'center'}}>
-        <HSHelp text="8자리 이상, 특수문자를 포함해야 합니다."/>
+      <div style={{position: 'absolute', right: 5, height: '100%', display: 'flex', alignItems: 'end', justifyContent: 'center'}}>
+        <div style={{paddingBottom: reduceBottomPadding ? 10 : 20}}>
+          <HSHelp text="8자리 이상, 특수문자를 포함해야 합니다."/>
+        </div>
       </div> : <></>}
       <style jsx>{`
+        input {
+          outline: none;
+        }
         .big-input-wrap {
           height: 60px; 
           display: flex;
-          border-bottom: 1px solid white;
+          border-bottom: 1px solid #000;
         }
         .big-input-wrap.reduce-padding {
           height: 50px;
@@ -44,8 +49,12 @@ export default function HSBigInput({fieldName, fieldValue, setFieldValue, imageS
         .big-input-image-wrap {
           display: flex; 
           justify-content: center;
-          align-items: center; 
+          align-items: end; 
           width: 50px;
+          padding-bottom: 20px;
+        }
+        .big-input-image-wrap.reduce-padding {
+          padding-bottom: 10px;
         }
         .big-input-image {
           width: 20px;
@@ -63,11 +72,11 @@ export default function HSBigInput({fieldName, fieldValue, setFieldValue, imageS
           background: transparent;
           border: none;
           width: 90%;
-          color: white;
+          color: #000;
         }
         .big-input-placeholder {
           position: absolute;
-          color: #AAA;
+          color: #666;
           font-size: 12px;
           top: 24px;
           left: 2px;

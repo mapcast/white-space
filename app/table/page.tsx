@@ -8,6 +8,10 @@ import { useState } from "react";
 import atom from '@/public/icons/atom.png';
 import HSPicketProgressBar from "@/components/common/chart/HSPicketProgressBar";
 import HSTextArea from "@/components/common/input/HSTextArea";
+import HSModal from "@/components/common/HSModal";
+import Loading from "@/components/common/Loading";
+import HSButton from "@/components/common/input/HSButton";
+import HSLink from "@/components/common/input/HSLink";
 
 const font = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -16,6 +20,7 @@ export default function TableTest() {
   const [selected, setSelected] = useState('');
   const [fieldValue, setFieldValue] = useState('');
   const [textarea, setTextarea] = useState('');
+  const [modalActive, setModalActive] = useState(true);
   return (
     <div className={font.className} style={{padding: 20}}>
       <HSTableSet
@@ -55,8 +60,11 @@ export default function TableTest() {
         <HSPicketProgressBar red={110} green={0} blue={254} picket="55%" value={55} text="Yay"/>
       </div>
       <div>
-        <HSTextArea fieldName="JACK" fieldValue={textarea} setFieldValue={setTextarea}/>
+        <HSTextArea fieldName="Text-Area" fieldValue={textarea} setFieldValue={setTextarea}/>
       </div>
+      <HSModal active={modalActive} setActive={setModalActive} title="Modal" content={<div style={{width: 500, height: 300}}><Loading/></div>}/>
+      <HSButton onClick={() => setModalActive(true)} text={"open modal"}/>
+      <HSLink text="Hello." onClick={() => {}}/>
     </div>
   )
 }

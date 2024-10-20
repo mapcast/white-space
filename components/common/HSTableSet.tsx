@@ -112,7 +112,7 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
     }  
   }
 
-  useEffect(() => {setLoading(true);getDatas();}, [sort]);
+  useEffect(() => {setLoading(true);/*getDatas();*/}, [sort]);
 
   return (
     <div>

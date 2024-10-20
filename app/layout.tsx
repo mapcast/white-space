@@ -19,9 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en" style={{width: '100%', height: '100%'}}>
       <body className={basicFont.className} style={{width: '100%', height: '100%'}}>
-        <AuthContext>
+        {/*
+         <AuthContext>
           <Wrapper contents={children}/>
         </AuthContext>
+        */}
+        {children}
+       
       </body>
     </html>
   );

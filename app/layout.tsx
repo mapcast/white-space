@@ -4,6 +4,7 @@ import "./globals.css";
 import "@/style/spinner.css";
 import AuthContext from "@/src/context/AuthContext";
 import Wrapper from "@/components/layout/Wrapper";
+import HSDrawer from "@/components/common/menu/drawer/HSDrawer";
 const basicFont = Indie_Flower({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" style={{width: '100%', height: '100%'}}>
       <body className={basicFont.className} style={{width: '100%', height: '100%'}}>
+        <HSDrawer/>
         {/*
          <AuthContext>
           <Wrapper contents={children}/>

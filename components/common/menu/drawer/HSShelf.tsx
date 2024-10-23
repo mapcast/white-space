@@ -1,35 +1,34 @@
 'use client'
 import { useState } from "react";
 import SimpleArrow from "../../item/SimpleArrow";
+type SubShelfItem = {
+  text: string,
+  onClick: () => void
+}
+type ShelfItem = {
+  text: string,
+  sub: SubShelfItem[]
+}
 
-export default function HSShelf({text}: {text: string}) {
+export default function HSShelf({text, shelf}: {text: string, shelf: ShelfItem}) {
   const [opened, setOpened] = useState(false);
   return (
     <div className={`shelves ${opened ? 'opened' : 'closed'}`}>
       <div className={`main-shelf`} onClick={() => setOpened(!opened)}>
         <div className="vertical-align">
-          <span style={{paddingLeft: 30, fontSize: 18}}>{text}</span>
+          <span style={{paddingLeft: 30, fontSize: 18}}>{shelf.text}</span>
         </div>
         <div className="element-to-center">
           <button><SimpleArrow rotate={opened ? 270 : 90}/></button>
         </div>
       </div>
-      <div className="sub-shelf element-to-center">
-        YaY
-      </div>
-      <div className="sub-shelf element-to-center">
-        Boss
-      </div>
-      <div className="sub-shelf element-to-center">
-        Lofi
-      </div>
-      <div className="sub-shelf element-to-center">
-        Maximiliano
-      </div>
+      {shelf.sub.map((sub: SubShelfItem, index: number) =>
+      <div className="sub-shelf element-to-center" key={index} onClick={() => sub.onClick()}>
+        {sub.text}
+      </div>)}
       <style jsx>{`
         .shelves {
           overflow-y: hidden;
-          max-height: 60px;
           transition: all 0.3s;
         }
         .main-shelf {
@@ -47,6 +46,9 @@ export default function HSShelf({text}: {text: string}) {
         }
         .opened {
           max-height: 500px;
+        }
+        .closed {
+          max-height: 60px;
         }
       `}</style>
     </div>

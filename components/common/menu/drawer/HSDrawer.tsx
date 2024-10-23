@@ -9,7 +9,8 @@ export default function HSDrawer({right}: {right?: boolean}) {
     <nav className={active ? 'active' : 'deactive'}>
       <button onClick={() => setActive(!active)}>{active ? 'fold' : 'open'}</button>
 
-      <HSShelf text="Hello"/>
+      <HSShelf text="Hello"
+      shelf={{text: "Just Shelf", sub: [{text: 'Sub Shelf', onClick: () => alert("sub!")},{text: 'Sub Shelf 2', onClick: () => alert("sub 2!")}]}}/>
       <style jsx>{`
         nav {
           position: fixed; 

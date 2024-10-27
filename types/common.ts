@@ -22,6 +22,11 @@ type HSItem = {
   selectItems?: HSItem[]
 }
 
+type Clickable = {
+  display: string | JSX.Element,
+  onClick: () => void
+}
+
 type HSKeyValue = {
   key: string,
   value: string,

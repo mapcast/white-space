@@ -12,6 +12,9 @@ import HSModal from "@/components/common/HSModal";
 import Loading from "@/components/common/Loading";
 import HSButton from "@/components/common/input/HSButton";
 import HSLink from "@/components/common/input/HSLink";
+import HSToggler from "@/components/common/input/HSToggler";
+import HSFloatButton from "@/components/common/input/HSFloatButton";
+import HSStepper from "@/components/common/HSStepper";
 
 const font = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -21,8 +24,17 @@ export default function TableTest() {
   const [fieldValue, setFieldValue] = useState('');
   const [textarea, setTextarea] = useState('');
   const [modalActive, setModalActive] = useState(true);
+  const [step, setStep] = useState('table');
   return (
     <div className={font.className} style={{padding: 20}}>
+      <HSStepper
+      step={step}
+      setStep={(s: string) => setStep(s)}
+      items={[
+        {raw: 'table', display: 'Table Page'},
+        {raw: 'paddington', display: 'Paddington'},
+        {raw: 'COT', display: 'City of Troy'},
+      ]}/>
       <HSTableSet
       headers={[
         {
@@ -65,6 +77,14 @@ export default function TableTest() {
       <HSModal active={modalActive} setActive={setModalActive} title="Modal" content={<div style={{width: 500, height: 300}}><Loading/></div>}/>
       <HSButton onClick={() => setModalActive(true)} text={"open modal"}/>
       <HSLink text="Hello." onClick={() => {}}/>
+      <HSToggler items={[
+        {display: 'a', onClick: () => alert('test')},
+        {display: 'b', onClick: () => alert('test')},
+        {display: 'c', onClick: () => alert('test')},
+        {display: 'd', onClick: () => alert('test')},
+        {display: 'e', onClick: () => alert('test')},
+      ]}/>
+      <HSFloatButton onClick={() => {}} bottom={20} right={20}/>
     </div>
   )
 }

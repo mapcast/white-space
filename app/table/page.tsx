@@ -15,6 +15,7 @@ import HSLink from "@/components/common/input/HSLink";
 import HSToggler from "@/components/common/input/HSToggler";
 import HSFloatButton from "@/components/common/input/HSFloatButton";
 import HSStepper from "@/components/common/HSStepper";
+import HSTabs from "@/components/common/HSTabs";
 
 const font = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -27,6 +28,14 @@ export default function TableTest() {
   const [step, setStep] = useState('table');
   return (
     <div className={font.className} style={{padding: 20}}>
+      <HSTabs
+      selected={step}
+      clickTab={(s: string) => setStep(s)}
+      items={[
+        {raw: 'table', display: 'Table Page'},
+        {raw: 'paddington', display: 'Paddington'},
+        {raw: 'COT', display: 'City of Troy'},
+      ]}/>
       <HSStepper
       step={step}
       setStep={(s: string) => setStep(s)}

@@ -1,10 +1,12 @@
+import declaration from '@/public/icons/declaration.png';
+
 
 export default function HSFloatButton({background, top, bottom, left, right, onClick}: 
   {background?: string, top?: number, bottom?: number, left?: number, right?:number, onClick: () => void}) {
   return (
     <button className="hs-float-button" onClick={onClick}>
       <div className="hs-float-button-shadow">
-
+        <img src={declaration.src} style={{width: 25, height: 25}}/>
       </div>
       <style jsx>{`
         .hs-float-button {
@@ -23,7 +25,7 @@ export default function HSFloatButton({background, top, bottom, left, right, onC
           min-width: 60px;
           border: 1px groove rgba(0,0,0,0.1);
           display: flex;
-          justify-contents: center;
+          justify-content: center;
           align-items: center;
           padding: 0;
           box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
@@ -36,6 +38,9 @@ export default function HSFloatButton({background, top, bottom, left, right, onC
           width: 100%;
           height: 100%;
           background: transparent;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
         .hs-float-button-shadow:hover {
           border-radius: 30px;

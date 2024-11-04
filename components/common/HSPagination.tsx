@@ -17,48 +17,37 @@ export default function HSPagination({page, maxPage, setPage, search, dark}:
   }, [page, maxPage]);
   useEffect(() => {search()}, [page]);
   return (
-    <div className="pagination-wrap" style={{
-      background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-    }}>
-      <div className="pagination" style={{
-        background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      }}>
-        <button style={{padding: '1px'}} disabled={page <= 1} onClick={() => setPage(1)}><DoubleArrow rotate={270}/></button>
-        <button style={{padding: '1px'}} disabled={page <= 1} onClick={() => setPage(page - 1)}><SimpleArrow rotate={180}/></button>
+    <ul className="hs-pagination">
+        <li><button disabled={page <= 1} onClick={() => setPage(1)}><DoubleArrow rotate={270}/></button></li>
+        <li><button disabled={page <= 1} onClick={() => setPage(page - 1)}><SimpleArrow rotate={180}/></button></li>
         {/*<span style={{fontWeight: '800', fontSize: '13px'}} className="blue">{`${page + 1} (1~${maxPage})`}</span>*/}
         {pageList.map((pg: number) => 
-          <button key={pg} style={{width: 26, height: 26}} className={page === pg ? "active" : ""} onClick={() => setPage(pg)}>{pg}</button>
+          <li key={pg} className={page === pg ? "active" : ""}><button style={{width: 26, height: 26}} onClick={() => setPage(pg)}>{pg}</button></li>
         )}
-        <button style={{padding: '1px'}} disabled={page + 1 > maxPage} onClick={() => setPage(page + 1)}><SimpleArrow rotate={0}/></button>
-        <button style={{padding: '1px'}} disabled={page + 1 > maxPage} onClick={() => setPage(maxPage)}><DoubleArrow rotate={90}/></button>
-      </div>
+        <li><button disabled={page + 1 > maxPage} onClick={() => setPage(page + 1)}><SimpleArrow rotate={0}/></button></li>
+        <li><button disabled={page + 1 > maxPage} onClick={() => setPage(maxPage)}><DoubleArrow rotate={90}/></button></li>
       <style jsx>{`
-        .pagination-wrap {
-          width: 100%;
-          padding: 5px 0 6px 0;
-        }
-        .pagination {
+        .hs-pagination {
           display: flex;
-          justify-content: center;
-          width: 100%;
+          gap: 5px;
+          padding: 5px 0;
+        }
+        li {
+          list-style: none;
+          border-radius: 10px;
+          width: 30px;
+          height: 30px;
+          transition: all 0.7s ease;
+        }
+        li:hover, li.active {
+          background: rgba(0, 0, 0, 0.2);
         }
         button {
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.7s;
-          border-radius: 2px;
-        }
-        button:hover, button.active {
-          background: rgba(255, 255, 255, 0.5);
-        }
-        span {
-          cursor: default;
+          padding: 0;
+          width: 100% !important;
+          height: 100% !important;
         }
       `}</style>
-    </div>
+    </ul>
   )
 } 

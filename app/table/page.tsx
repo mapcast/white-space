@@ -16,6 +16,7 @@ import HSToggler from "@/components/common/input/HSToggler";
 import HSFloatButton from "@/components/common/input/HSFloatButton";
 import HSStepper from "@/components/common/HSStepper";
 import HSTabs from "@/components/common/HSTabs";
+import SimpleToast from "@/components/common/item/SimpleToast";
 
 const font = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -26,6 +27,7 @@ export default function TableTest() {
   const [textarea, setTextarea] = useState('');
   const [modalActive, setModalActive] = useState(true);
   const [step, setStep] = useState('table');
+  const [toast, setToast] = useState(false);
   return (
     <div className={font.className} style={{padding: 20}}>
       <HSTabs
@@ -93,7 +95,8 @@ export default function TableTest() {
         {display: 'd', onClick: () => alert('test')},
         {display: 'e', onClick: () => alert('test')},
       ]}/>
-      <HSFloatButton onClick={() => {}} bottom={20} right={20}/>
+      <HSFloatButton onClick={() => setToast(true)} bottom={20} right={20}/>
+      <SimpleToast text="Toast is Activated" active={toast} close={() => setToast(false)}/>
     </div>
   )
 }

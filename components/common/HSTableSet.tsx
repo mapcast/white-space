@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import HSSearchPanel from "./HSSearchPanel";
 import HSTable from "./HSTable";
-import HSPagination from "./HSPagination";
 import ColorSwitch from "./item/ColorSwitch";
+import HSTablePagination from "./HSTablePagination";
+import HSPagination from "./HSPagination";
 
 const dataset = [
   {

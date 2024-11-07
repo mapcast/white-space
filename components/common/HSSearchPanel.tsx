@@ -40,7 +40,7 @@ export default function HSSearchPanel({items, searchKey, updateSearchKey, search
   }
 
   return (
-    <div style={{display: 'flex', padding: '10px 0'}}>
+    <div style={{display: 'flex'}}>
       <div style={{padding: '8px 4px'}}>
         <HSSelectBox items={items} selected={searchKey} setSelected={selectKey} dark={dark}/>
       </div>

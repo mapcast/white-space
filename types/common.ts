@@ -53,3 +53,22 @@ type HSSort = {
   target: string,
   direction: boolean
 }
+
+type WrapperProp = {
+  children: JSX.Element
+}
+
+type WrapperWithTitle = {
+  title: string,
+  children: JSX.Element
+}
+
+type SubShelfItem = {
+  text: string,
+  onClick: () => void
+}
+type ShelfItem = {
+  icon?: string,
+  text: string,
+  sub: SubShelfItem[]
+}

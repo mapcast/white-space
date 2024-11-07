@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import HSSearchPanel from "./HSSearchPanel";
 import HSTable from "./HSTable";
 import ColorSwitch from "./item/ColorSwitch";
-import HSTablePagination from "./HSTablePagination";
 import HSPagination from "./HSPagination";
 
 const dataset = [
@@ -34,8 +33,8 @@ const dataset = [
 
 export default function HSTableSet({headers, getDatasApi, additionalCondition}: 
   {headers: HSTableHeader[]
-    getDatasApi: (params: Map<String, String>) => Promise<any | null>, 
-    additionalCondition?: Map<String, String>}) {
+    getDatasApi: (params: Map<string, string>) => Promise<any | null>, 
+    additionalCondition?: Map<string, string>}) {
 
   const [searchKey, setSearchKey] = useState<HSItem|null>(null);
   const [searchValue, setSearchValue] = useState('');
@@ -65,11 +64,12 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
   }
 
   async function getDatas(multiple?: boolean) {
-    const params: Map<String, String> = new Map();
+    
+
+    const params: Map<string, string> = new Map();
     params.set('page', page.toString());
     params.set('size', '10');
-    //추가조건 받는식으로 작성
-    //if(imageId) params.set('imageId', imageId);
+
     if(additionalCondition) {
       const keys = additionalCondition.keys();
       let next = keys.next();
@@ -102,29 +102,27 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
         }
       }
     }
-
+    console.log(params)
     const response = await getDatasApi(params);
     if(response != null) {
-      setList(response.page.content);
-      setMaxPage(response.page.totalPages);
+      setList(response.data.contents);
+      setMaxPage(response.data.totalPages);
       setLoading(false);
     } else {
       alert("테이블 데이터를 불러오는 중 에러가 발생했습니다.");
     }  
   }
 
-  useEffect(() => {setLoading(true);/*getDatas();*/}, [sort]);
+  useEffect(() => {setLoading(true);getDatas();}, [sort]);
 
   return (
     <div>
       <ColorSwitch/>
-      <div>
+      <div style={{display: 'flex', justifyContent: 'right', alignItems: 'center'}}>
         <HSSearchPanel 
         items={headers.filter((header: HSTableHeader) => header.search)
           .map((header: HSTableHeader) => {return {id: header.id, display: header.display, raw: header.raw}})}
-        executeSearch={() => {
-          setList(dataset);
-        }}
+        executeSearch={() => getDatas()}
         searchKey={searchKey}
         updateSearchKey={setSearchKey}
         searchValue={searchValue}
@@ -145,14 +143,18 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
         width={[200,'auto','auto']}
         loading={false}/>
       </div>
-      <HSPagination 
-      page={page}
-      maxPage={maxPage}
-      setPage={setPage}
-      search={() => {}}/>
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <HSPagination 
+        page={page}
+        maxPage={maxPage}
+        setPage={setPage}
+        search={() => getDatas()}/>
+      </div>
+      {/* 
       <div>
         <span>{`sort: ${sortDisplay}`}</span>
       </div>
+      */}
     </div>
   )
 }

@@ -21,10 +21,10 @@ export default function HSInput({type, value, setValue, disabled, placeholder, p
   }
 
   function checkPushEnter(e: React.KeyboardEvent) {
-    if(e.key === 'enter' && pushEnter) {
-      pushEnter();
+    if(e.key.toLowerCase() === 'enter') {
+      if(pushEnter) pushEnter();
     }
-  }
+  } 
 
   return (
     <root.div>

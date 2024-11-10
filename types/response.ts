@@ -1,12 +1,12 @@
-/*type PageResult<T> = {
+type PageResult<T> = {
   code: number,
   message: string,
   totalPages: number,
   totalElements: number,
   contents: T[]
-}*/
+}
 
-type PageResult<T> = {
+type PageableResult<T> = {
   success: boolean,
   code: number,
   message: string,

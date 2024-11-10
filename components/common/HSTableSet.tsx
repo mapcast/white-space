@@ -3,6 +3,7 @@ import HSSearchPanel from "./HSSearchPanel";
 import HSTable from "./HSTable";
 import ColorSwitch from "./item/ColorSwitch";
 import HSPagination from "./HSPagination";
+import HSSelectBox from "./input/HSSelectBox";
 
 const dataset = [
   {
@@ -42,7 +43,6 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
   const [list, setList] = useState<Object[]>([]);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(99);
-  const [multipleSearch, setMultipleSearch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState<HSTableSort>({
     target: null,
@@ -50,6 +50,7 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
     direction: true
   });
   const [sortDisplay, setSortDisplay] = useState('');
+  const [pageSize, setPageSize] = useState<HSItem>({raw: '10'});
 
   function handleSort(target: HSTableColumn) {
     if(sort.target === target) {
@@ -63,12 +64,10 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
     }
   }
 
-  async function getDatas(multiple?: boolean) {
-    
-
+  async function getDatas() {
     const params: Map<string, string> = new Map();
     params.set('page', page.toString());
-    params.set('size', '10');
+    params.set('size', pageSize.raw);
 
     if(additionalCondition) {
       const keys = additionalCondition.keys();
@@ -82,27 +81,15 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
     if(sort.target != null) {
       params.set('sort', `${sort.target.join ? `${sort.target.join}.${sort.target.raw}` : sort.target.raw},${sort.direction ? 'DESC' : 'ASC'}`)
     }
-    
-    if(multiple) {
-      if(multiple === true) {
-        setMultipleSearch(true);
-        searchConditions.forEach((condition: HSKeyValue) => params.set(condition.key, condition.value));
-      } else {
-        setMultipleSearch(false);
-        if(searchKey != null && searchValue !== '') {
-          params.set(searchKey.raw, searchValue);
-        }
-      }
-    } else {
-      if(multipleSearch === true) {
-        searchConditions.forEach((condition: HSKeyValue) => params.set(condition.key, condition.value));
-      } else {
-        if(searchKey != null && searchValue !== '') {
-          params.set(searchKey.raw, searchValue);
-        }
-      }
+
+    if(searchConditions.length > 0) {
+      searchConditions.forEach((condition: HSKeyValue) => params.set(condition.key, condition.value));
     }
-    console.log(params)
+    if(searchKey != null && searchValue !== '') {
+      params.set(searchKey.raw, searchValue);
+    }
+    console.log(searchConditions);
+    
     const response = await getDatasApi(params);
     if(response != null) {
       setList(response.data.contents);
@@ -113,12 +100,16 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
     }  
   }
 
-  useEffect(() => {setLoading(true);getDatas();}, [sort]);
+  useEffect(() => {setLoading(true);getDatas();}, [sort, pageSize]);
 
   return (
     <div>
       <ColorSwitch/>
-      <div style={{display: 'flex', justifyContent: 'right', alignItems: 'center'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <HSSelectBox
+        items={[{raw: '10'},{raw: '20'},{raw: '30'},{raw: '40'},{raw: '30'}]} 
+        selected={pageSize} 
+        setSelected={setPageSize}/>
         <HSSearchPanel 
         items={headers.filter((header: HSTableHeader) => header.search)
           .map((header: HSTableHeader) => {return {id: header.id, display: header.display, raw: header.raw}})}
@@ -143,7 +134,7 @@ export default function HSTableSet({headers, getDatasApi, additionalCondition}:
         width={[200,'auto','auto']}
         loading={false}/>
       </div>
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <div style={{display: 'flex', alignItems: 'center', paddingLeft: 20}}>
         <HSPagination 
         page={page}
         maxPage={maxPage}

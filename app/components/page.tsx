@@ -48,26 +48,6 @@ export default function TableTest() {
           {raw: 'paddington', display: 'Paddington'},
           {raw: 'COT', display: 'City of Troy'},
         ]}/>
-        <HSTableSet
-        headers={[
-          {
-            raw: 'createdTimeAt',
-            search: false,
-            display: 'Created Time',
-          },
-          {
-            raw: 'fieldA',
-            search: true,
-            display: 'Field A',
-          },
-          {
-            raw: 'fieldB',
-            search: true,
-            display: 'Field B',
-          },
-        ]}
-        getDatasApi={async () => {}}
-        />
         <div>
           <HSCheckBox value={"abc"} checked={checked} text={'CheckBox'} onChange={() => setChecked(!checked)}/>
           <HSCheckBox value={"bsd"} checked={checked} text={'Select'} onChange={() => setChecked(!checked)} Switch/>

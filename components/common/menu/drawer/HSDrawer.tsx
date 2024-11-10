@@ -2,20 +2,30 @@
 import { useState } from "react";
 import HSShelf from "./HSShelf";
 import atom from '@/public/icons/atom.png';
+import DoubleArrow from "../../item/DoubleArrow";
+import nextt from '@/public/icons/direction/nextt.png';
+import { useRouter } from "next/navigation";
 
-const datas = [
-  {icon: atom.src, text: "Just Shelf", sub: [{text: 'Sub Shelf', onClick: () => alert("sub!")},{text: 'Sub Shelf 2', onClick: () => alert("sub 2!")},]},
-  {text: "Good Shelf", sub: [{text: 'Sub Shelf3', onClick: () => alert("sub!")},{text: 'Sub Shelf 4', onClick: () => alert("sub 2!")},]},
-  {icon: atom.src, text: "Suoer Shelf", sub: [{text: 'Sub Shelf3', onClick: () => alert("sub!")},{text: 'Sub Shelf 4', onClick: () => alert("sub 2!")},]},
-  {icon: atom.src, text: "PP Shelf", sub: [{text: 'Sub Shelf3', onClick: () => alert("sub!")},{text: 'Sub Shelf 4', onClick: () => alert("sub 2!")},]}
-]
 
 export default function HSDrawer({background, right}: {background?: string, right?: boolean}) {
   const [active, setActive] = useState(false);
   const [opened, setOpened] = useState<ShelfItem|null>(null);
+  const router = useRouter();
+  const datas = [
+    {text: "Pages", sub: [
+      {text: 'board page', onClick: () => router.push('/board')},
+      {text: 'component page', onClick: () => router.push('/components')},
+      {text: 'home', onClick: () => router.push('/home')}]},
+    {icon: atom.src, text: "Just Shelf", sub: [{text: 'Sub Shelf', onClick: () => alert("sub!")},{text: 'Sub Shelf 2', onClick: () => alert("sub 2!")},]},
+    {text: "Good Shelf", sub: [{text: 'Sub Shelf3', onClick: () => alert("sub!")},{text: 'Sub Shelf 4', onClick: () => alert("sub 2!")},]},
+    {icon: atom.src, text: "Suoer Shelf", sub: [{text: 'Sub Shelf3', onClick: () => alert("sub!")},{text: 'Sub Shelf 4', onClick: () => alert("sub 2!")},]},
+    {icon: atom.src, text: "PP Shelf", sub: [{text: 'Sub Shelf3', onClick: () => alert("sub!")},{text: 'Sub Shelf 4', onClick: () => alert("sub 2!")},]}
+  ]
+  
+
   return (
     <nav className={active ? 'active' : 'deactive'}>
-      <button onClick={() => setActive(!active)}>{active ? 'fold' : 'open'}</button>
+      <button onClick={() => setActive(!active)}><img src={nextt.src} style={{width: 25, transform: active ? 'rotate(180deg)' : 'rotate(0)'}}/></button>
       {datas.map((shelf: ShelfItem, index: number) => <HSShelf key={index} opened={opened != null && opened.text === shelf.text} setOpened={setOpened} shelf={shelf}/>)}
       <style jsx>{`
         nav {

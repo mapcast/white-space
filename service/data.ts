@@ -3,13 +3,8 @@ import axios from "axios";
 export async function getHorseDatas(keywords: Map<string, string>) {
   try {
     const urlSearchParams = new URLSearchParams();
-    for(const key in keywords) {
-      const value = keywords.get(key);
-      console.log(key);
-      console.log(value);
-      if(value) urlSearchParams.append(key, value);
-    }
-    const response: PageResult<any> = await axios.get(`http://localhost:8090/board/horse`);
+    keywords.forEach((value, key) => urlSearchParams.append(key.toString(), value.toString()));
+    const response: PageResult<any> = await axios.get(`/api/ws/board/horse?${urlSearchParams.toString()}`, {responseType: 'json'});
     return response;
   } catch(err) {
     console.log(err);

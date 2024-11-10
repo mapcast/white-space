@@ -20,7 +20,7 @@ export default function BoardPage() {
             {
               raw: 'father',
               search: true,
-              display: '부',
+              display: '가문',
             },
             {
               raw: 'name',
@@ -30,7 +30,7 @@ export default function BoardPage() {
             {
               raw: 'jraPrice',
               search: true,
-              display: '수득상금',
+              display: '점수',
             },
           ]}/>
         </div>

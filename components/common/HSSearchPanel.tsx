@@ -4,7 +4,7 @@ import HSSelectBox from "./input/HSSelectBox";
 import HSInput from "./input/HSInput";
 import HSButton from "./input/HSButton";
 
-export default function HSSearchPanel({items, searchKey, updateSearchKey, searchValue, updateSearchValue,
+export default function  HSSearchPanel({items, searchKey, updateSearchKey, searchValue, updateSearchValue,
   searchConditions, updateSearchConditions, executeSearch, multiple, dark}: 
   {items: HSItem[], searchKey: HSItem|null, updateSearchKey: (key: HSItem|null) => void, searchValue: string, updateSearchValue: (val: string) => void
     searchConditions: HSKeyValue[], updateSearchConditions: Function, executeSearch: () => void, multiple?: boolean, dark?: boolean}) {
@@ -25,7 +25,7 @@ export default function HSSearchPanel({items, searchKey, updateSearchKey, search
           value: searchValue, 
           valueDisplay: searchKey.selectItems ? searchKey.selectItems.filter((item: HSItem) => item.value === searchValue)[0].display : []}]);
       } else {
-        updateSearchConditions([...searchConditions, {key: searchKey.value, keyDisplay: searchKey.display, value: searchValue, valueDisplay: searchValue}]);
+        updateSearchConditions([...searchConditions, {key: searchKey.raw, keyDisplay: searchKey.display, value: searchValue, valueDisplay: searchValue}]);
       }
       updateSearchValue('');
       updateSearchKey(null);

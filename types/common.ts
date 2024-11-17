@@ -63,12 +63,21 @@ type WrapperWithTitle = {
   children: JSX.Element
 }
 
-type SubShelfItem = {
+type HSSubShelfItem = {
   text: string,
   onClick: () => void
 }
-type ShelfItem = {
+type HSShelfItem = {
   icon?: string,
   text: string,
-  sub: SubShelfItem[]
+  sub: HSSubShelfItem[]
+}
+
+type HSFooterCategory = {
+  title: string,
+  items: HSFooterItem[]
+}
+type HSFooterItem = {
+  text: string,
+  link: string
 }

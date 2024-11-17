@@ -3,8 +3,15 @@ import { useState } from 'react';
 import HSButton from '../components/common/input/HSButton';
 import HSDrawer from '../components/common/menu/drawer/HSDrawer';
 import { Roboto } from 'next/font/google';
+import HSFooter from '@/components/common/menu/footer/HSFooter';
 
 const font = Roboto({ subsets: ["latin"], weight: "400" });
+
+
+const footerData: HSFooterCategory[] = [
+  {title: 'Foot 1', items: [{link: '/board', text: 'board'}, {link: '/home', text: 'home'}]},
+  {title: 'Foot 2', items: [{link: '/components', text: 'components'}, {link: '/s', text: 'home'}]}
+]
 
 export default function Simple({children}: WrapperProp) {
   const [background, setBackground] = useState('#FFF');
@@ -19,6 +26,7 @@ export default function Simple({children}: WrapperProp) {
       </div>
       <HSDrawer/>
       {children}
+      <HSFooter items={footerData} sub={{link: '', text: '약관을 확인하세요.'}} fixed/>
     </div>
   );
 }
